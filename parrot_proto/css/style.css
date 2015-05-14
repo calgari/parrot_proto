@@ -1,0 +1,128 @@
+/*スタイル*/
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	text-decoration: none;
+	list-style: none;
+}
+html, body{
+	height: 100%;
+	font-size: 14px;
+}
+#MessageForm{
+	flex: 0 0 auto;
+	display: flex;
+	padding: 10px;
+}
+#MessageInput{
+	flex: 1;
+	padding: 5px;
+	display: block;
+}
+#SendButton{
+	width: 110px;
+	flex: 0;
+	display: block;
+}
+.body-content{
+  display: flex;
+  height: 100%;
+}
+.chat-area{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 50%;
+  box-shadow: 0 0 4px rgba(0,0,0,0.25);
+}
+.search-area{
+  width: 50%;
+  height: 100%;
+}
+.list-container{
+  flex: 1 1 auto;
+  overflow-y: scroll;
+}
+.chat-area .list-container{
+  overflow-y: scroll;
+}
+.chat-area .list-container li{
+  padding: 5px 10px;
+}
+.search-area .list-container{
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+}
+.search-result-group{
+  display: flex;
+  background: #ccc;
+  border-radius: 4px;
+  margin: 4px;
+  border: 2px solid #ccc;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.search-result{
+  flex: 0 0 auto;
+  background: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+  margin-top: 4px;
+  margin-bottom: 4px;
+  max-width: 150px;
+}
+.search-result:first-child{
+  margin-left: 4px;
+}
+.search-result:last-child{
+  margin-right: 4px;
+}
+.search-result:not(:last-child){
+  border-right: 1px dotted #aaa;
+}
+.search-result dt{
+  font-size: 10px;
+  color: #666;
+  margin: 2px;
+  margin-bottom: 4px;
+}
+.search-result dd{
+  float: left;
+  background: #333;
+  color: #fff;
+  padding: 2px;
+  display: inline-block;
+  border-radius: 3px;
+  margin: 2px;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+.chat-controller{
+  margin-left: 4px;
+}
+.chat-controller > *{
+  display: block;
+  min-height: 50px;
+  white-space: nowrap;
+}
+.voice-input-switch{
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 2px;
+  line-height: 50px;
+  padding-left: 4px;
+  width: 110px;
+}
+.voice-input-switch *{
+  vertical-align: middle;
+  margin: 2px;
+}
+.voice-input-switch input[type=checkbox]:checked ~ label{
+  color: rgba(0, 0, 0, 0);
+}
+.voice-input-switch input[type=checkbox]:checked ~ label:before{
+  color: rgba(0, 0, 0, 1.0);
+  content: 'Inputing...';
+}

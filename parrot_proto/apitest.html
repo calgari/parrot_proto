@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+  <head>
+    <title>API test</title>
+    <link rel="stylesheet" href="../stylesheets/style.css">
+    <meta charset="UTF-8">
+    <style>
+    #formBox input, #formBox button{ margin: 10px 0 0 10px; padding: 4px;}
+    </style>
+  </head>
+  <body>
+    <h1 style="margin:14px; font-size:14px;">品詞、単語ID、英訳チェッカー</h1>
+    <div id="formBox">
+      <div><input value='権限' id="Input1" autocomplete="off" /><button id="WordTypeButton">品詞チェック</button></div>
+      <div><input value='権限' id="Input2" autocomplete="off" /><button id="IDCheckButton">IDチェック</button></div>
+      <div><input value='044242' id="Input3" autocomplete="off" /><button id="WordCheckButton">検出単語チェック</button></div>
+    </div>
+    <script src="js/jquery-1.11.2.js"></script>
+    <script src="js/jquery.xdomainajax.js"></script>
+    <script src="js/class/Util.js"></script>
+    <script src="js/class/SentenceSeparator.js"></script>
+    <script src="js/class/DictionaryLookUp.js"></script>
+    <script>
+    $(document).ready(function(){
+      $('#WordTypeButton').click(function(){
+        var ss=new Parrot.SentenceSeparator($('#Input1').val(), $('#WordTypeButton'));
+        ss.exec();
+      });
+      $('#IDCheckButton').click(function(){
+        var dlu = new Parrot.DictionaryLookUp($('#Input2').val(), null, null);
+        dlu.getWordId();
+      });
+      $('#WordCheckButton').click(function(){
+        var dlu = new Parrot.DictionaryLookUp('', null, null);
+        dlu.getTranslatedWord({responseText: '<itemid>'+$('#Input3').val()+'</itemid>'}, 0);
+      });
+      document.addEventListener("sentenceSeparateEndEvent", function(event){ separateTest(event.attachedData); }, false);
+      document.addEventListener("getWordIdEndEvent", function(event){ checkIdTest(event.attachedData.ajaxResponse); }, false);
+      document.addEventListener("getTranslatedWordEndEvent", function(event){ checkWordTest(event.attachedData.ajaxResponse); }, false);
+    });
+    function separateTest(data){
+      var $response = $($.parseXML(data.responseText));
+      $response.find('word pos').each(function(){
+        var $this = $(this);
+        var posText = $this.text();
+        var pos = posText.split(',');
+        var baseFormText = $this.next().text();
+        console.log('word:'+ baseFormText + ' type:'+ pos);
+      });
+      console.log('_____');
+    }
+    function checkIdTest(data){
+      var $response = $($.parseXML(data.responseText));
+      $response.find('itemid').each(function(){
+        var $this = $(this);
+        var itemId = $this.text();
+        var word = $this.parent().find('.NetDicTitle').text();
+        console.log('word:'+ word + ' id:'+ itemId);
+      });
+      console.log('_____');
+    }
+    function checkWordTest(data){
+      var $response = $($.parseXML(data.responseText));
+      $response.find('.NetDicBody > div > div').each(function(){
+        var $this = $(this);
+        var text = $this.text();
+        text = text.replace('↵', "");//改行コードトリミング
+        text = text.replace(/(\(.*\))/g, "");//括弧内をトリミング
+        text = text.replace(/(^\s+)|(\s+$)/g, "");//空白文字トリミング
+        if(text==='') return;
+        console.log('content: '+ text);
+      });
+      console.log('_____');
+    }
+    </script>
+  </body>
+</html>
