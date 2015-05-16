@@ -1,0 +1,4 @@
+ローカルを更新したいときは
+
+git fetch origin
+git merge origin/master
